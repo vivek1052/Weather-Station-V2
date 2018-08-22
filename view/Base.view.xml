@@ -1,0 +1,101 @@
+<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.data="sap.viz.ui5.data"
+	controllerName="ZWS.ZWeatherStation.controller.Base" displayBlock="true">
+	<App id="idAppControl">
+		<pages>
+			<Page title="{i18n>title}">
+				<content>
+					<HeaderContainer id="HeaderContainer">
+						<TileContent footer="{/response/ob/weather}" class="sapUiSmallMargin">
+							<content>
+								<ImageContent src="images/{/response/ob/icon}"/>
+							</content>
+						</TileContent>
+						<TileContent footer="Temparature" class="sapUiSmallMargin">
+							<content>
+								<NumericContent value="{/response/ob/tempC}" scale="℃" icon="images/thermometer.png"/>
+							</content>
+						</TileContent>
+						<TileContent footer="Humidity" class="sapUiSmallMargin">
+							<content>
+								<NumericContent value="{/response/ob/humidity}" scale="%" icon="images/humidity.png"/>
+							</content>
+						</TileContent>
+						<TileContent footer="Wind" class="sapUiSmallMargin">
+							<content>
+								<NumericContent value="{/response/ob/windSpeedKPH}" scale="K/H" icon="images/windy.png"/>
+							</content>
+						</TileContent>
+						<TileContent footer="Pressure" class="sapUiSmallMargin">
+							<content>
+								<NumericContent value="{/response/ob/pressureIN}" scale="IN" icon="images/pressure-indicator.png"/>
+							</content>
+						</TileContent>
+						<TileContent footer="Feels Like" class="sapUiSmallMargin">
+							<content>
+								<NumericContent value="{/response/ob/feelslikeC}" scale="℃" icon="images/thermometer.png"/>
+							</content>
+						</TileContent>
+					</HeaderContainer>
+					<IconTabBar expanded="false" id="iconTabBar" class="sapUiResponsiveContentPadding" items="{/response/0/periods}">
+						<items>
+							<IconTabFilter icon="images/{icon}" iconColor="Positive" design="Vertical" text="{path:'dateTimeISO',formatter:'.dateFormatter'}" key="Ok">
+								<Text text="{weather}"/>
+							</IconTabFilter>
+						</items>
+					</IconTabBar>
+					<l:Grid id="grid0" defaultSpan="XL6 L6 M6 S6">
+						<l:FixFlex minFlexSize="250">
+							<l:flexContent>
+								<viz:VizFrame height='100%' width="100%" vizType='line' vizProperties="{ title: {text : '14 Day Temp. Data'}}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{/response/0/periods}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Date" value="{path:'dateTimeISO',formatter:'.dateFormatter'}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Max Temp." value="{maxTempC}"/>
+												<viz.data:MeasureDefinition name="Min Temp." value="{minTempC}"/>
+												<viz.data:MeasureDefinition name="Avg Temp." value="{avgTempC}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Max Temp."/>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Min Temp."/>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Avg Temp."/>
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Date"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</l:flexContent>
+						</l:FixFlex>
+						<l:FixFlex minFlexSize="250">
+							<l:flexContent>
+								<viz:VizFrame height='100%' width="100%" vizType='line' vizProperties="{ title: {text : '14 Day Humidity Data'}}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{/response/0/periods}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Date" value="{path:'dateTimeISO',formatter:'.dateFormatter'}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Max Humidity" value="{maxHumidity}"/>
+												<viz.data:MeasureDefinition name="Min Humidity" value="{minHumidity}"/>
+												<viz.data:MeasureDefinition name="Avg Humidity" value="{humidity}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Max Humidity"/>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Min Humidity"/>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Avg Humidity"/>
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Date"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</l:flexContent>
+						</l:FixFlex>
+					</l:Grid>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
